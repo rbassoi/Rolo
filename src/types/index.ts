@@ -6,9 +6,15 @@ export interface Shop {
   address: string;
   district: string;
   city: string;
+  state?: string;
   imageUrl?: string;
   phone?: string;
   hours?: string;
+  rating?: number;
+  total_reviews?: number;
+  lat?: number;
+  lng?: number;
+  place_id?: string;
 }
 
 export interface Product {
