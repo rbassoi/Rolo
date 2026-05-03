@@ -1,20 +1,22 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Nunito } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const nunito = Nunito({
+  variable: "--font-nunito",
   subsets: ["latin"],
+  weight: ["400", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
-  title: "Sion Portal | Local Directory & Marketplace",
-  description: "A local portal for Sion District in Belo Horizonte to showcase shops and buy/sell items.",
+  title: "Portal do Sion",
+  description: "Aquele cantinho da internet feito pra gente fazer uns rolos bons e apoiar quem é da vizinhança.",
 };
 
 import Header from "@/components/layout/Header";
@@ -27,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="pt-BR" className={`${inter.variable} ${nunito.variable}`}>
       <body>
         <AuthProvider>
           <Header />

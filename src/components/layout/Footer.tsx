@@ -1,11 +1,17 @@
-import styles from './Footer.module.css';
+import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className={styles.footer}>
-      <div className={`container ${styles.footerContainer}`}>
-        <p>&copy; {new Date().getFullYear()} Portal do Sion. Feito com carinho.</p>
-        <p className={styles.tagline}>Apoiando o comércio local do nosso Sion, uai.</p>
+    <footer>
+      <div className="footer-inner">
+        <span className="footer-copy">© {new Date().getFullYear()} Portal do Sion · Feito com 💚 no bairro</span>
+        <div className="footer-links">
+          <Link href="/about">Sobre</Link>
+          <Link href="/contact">Contato</Link>
+          <Link href="/privacy">Privacidade</Link>
+          <Link href="/terms">Termos</Link>
+          <Link href="/admin">Admin</Link>
+        </div>
       </div>
     </footer>
   );
