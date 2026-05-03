@@ -1,14 +1,65 @@
 'use client';
 
-import { use, useState } from 'react';
+import { use, useState, useEffect } from 'react';
 import Link from 'next/link';
-import { products } from '@/lib/mockData';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/lib/supabaseClient';
+import { Product } from '@/types';
 import styles from './page.module.css';
 
 export default function ProductDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
-  const product = products.find(p => p.id === resolvedParams.id);
+  const router = useRouter();
+  const { user } = useAuth();
+  
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+  
   const [chatOpen, setChatOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [chatHistory, setChatHistory] = useState<{sender: string, text: string}[]>([]);
+
+  useEffect(() => {
+    async function fetchProduct() {
+      const { data } = await supabase
+        .from('products')
+        .select('*')
+        .eq('id', resolvedParams.id)
+        .single();
+      
+      setProduct(data);
+      setLoading(false);
+    }
+    fetchProduct();
+  }, [resolvedParams.id]);
+
+  const handleOpenChat = () => {
+    if (!user) {
+      alert('Você precisa fazer login para enviar mensagens!');
+      router.push('/login');
+      return;
+    }
+    setChatOpen(true);
+  };
+
+  const handleSendMessage = () => {
+    if (!message.trim()) return;
+    
+    // Add user message
+    const newHistory = [...chatHistory, { sender: 'Você', text: message }];
+    setChatHistory(newHistory);
+    setMessage('');
+
+    // Simulate seller reply
+    setTimeout(() => {
+      setChatHistory(prev => [...prev, { sender: product?.sellerName || 'Vendedor', text: 'Olá! Ainda está disponível sim. Tem interesse?' }]);
+    }, 1500);
+  };
+
+  if (loading) {
+    return <div className="container" style={{ padding: '4rem', textAlign: 'center' }}>Carregando anúncio...</div>;
+  }
 
   if (!product) {
     return (
@@ -55,16 +106,24 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ id: s
           </div>
 
           <div className={styles.sellerBox}>
-            <h3>Vendido por {product.sellerName}</h3>
+            <h3>Vendido por {product.seller_name}</h3>
             <p className={styles.sellerSubtitle}>Mora aqui na região do Sion.</p>
             
             <div className={styles.actionButtons}>
-              <a href={`mailto:contato@exemplo.com?subject=Interesse no anúncio: ${product.title}`} className={styles.emailButton}>
-                📧 Entrar em Contato (Email)
-              </a>
-              <button onClick={() => setChatOpen(true)} className={styles.chatButton}>
-                💬 Chamar no Chat
-              </button>
+              {user ? (
+                <>
+                  <a href={`mailto:contato@exemplo.com?subject=Interesse no anúncio: ${product.title}`} className={styles.emailButton}>
+                    📧 Entrar em Contato (Email)
+                  </a>
+                  <button onClick={handleOpenChat} className={styles.chatButton}>
+                    💬 Chamar no Chat
+                  </button>
+                </>
+              ) : (
+                <Link href="/login" className={styles.loginRequiredButton}>
+                  Faça login para falar com o vendedor
+                </Link>
+              )}
             </div>
           </div>
         </div>
@@ -78,11 +137,28 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ id: s
               <button onClick={() => setChatOpen(false)} className={styles.closeButton}>&times;</button>
             </div>
             <div className={styles.chatBody}>
-              <p className={styles.systemMessage}>O chat ao vivo será implementado na Fase 4. Por enquanto, mande um email!</p>
+              {chatHistory.length === 0 ? (
+                <p className={styles.systemMessage}>Mande uma mensagem para começar a negociar este trem!</p>
+              ) : (
+                <div className={styles.messagesList}>
+                  {chatHistory.map((msg, idx) => (
+                    <div key={idx} className={msg.sender === 'Você' ? styles.msgSelf : styles.msgOther}>
+                      <strong>{msg.sender}:</strong> {msg.text}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
             <div className={styles.chatFooter}>
-              <input type="text" placeholder="Escreva sua mensagem..." disabled className={styles.chatInput} />
-              <button disabled className={styles.chatSend}>Enviar</button>
+              <input 
+                type="text" 
+                placeholder="Escreva sua mensagem..." 
+                className={styles.chatInput} 
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
+              />
+              <button onClick={handleSendMessage} className={styles.chatSend}>Enviar</button>
             </div>
           </div>
         </div>

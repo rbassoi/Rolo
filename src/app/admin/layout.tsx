@@ -14,6 +14,8 @@ export default function AdminLayout({
           <Link href="/admin" className={styles.navLink}>Resumo</Link>
           <Link href="/admin/users" className={styles.navLink}>Usuários</Link>
           <Link href="/admin/shops" className={styles.navLink}>Lojinhas</Link>
+          <Link href="/admin/categories" className={styles.navLink}>Categorias</Link>
+          <Link href="/admin/banners" className={styles.navLink}>Banners</Link>
         </nav>
       </aside>
       <div className={styles.content}>

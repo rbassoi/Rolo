@@ -1,10 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/lib/supabaseClient';
 import styles from './page.module.css';
 
 export default function NewProductPage() {
+  const { user, loading } = useAuth();
   const router = useRouter();
   const [formData, setFormData] = useState({
     title: '',
@@ -15,12 +18,44 @@ export default function NewProductPage() {
     image: null as File | null
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/login');
+    }
+  }, [user, loading, router]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate successful form submission
-    alert('Bão demais! Seu anúncio foi enviado (mock) com sucesso.');
-    router.push('/');
+    if (!user) return;
+    
+    setSubmitting(true);
+
+    const { error } = await supabase.from('products').insert([
+      {
+        title: formData.title,
+        description: formData.description,
+        price: parseFloat(formData.price),
+        condition: formData.condition,
+        seller_name: formData.sellerName,
+        seller_id: user.id
+      }
+    ]);
+
+    setSubmitting(false);
+
+    if (error) {
+      alert('Deu ruim: ' + error.message);
+    } else {
+      alert('Bão demais! Seu anúncio foi publicado com sucesso no banco de dados.');
+      router.push('/');
+    }
   };
+
+  if (loading || !user) {
+    return <div className="container" style={{ padding: '4rem', textAlign: 'center' }}>Carregando...</div>;
+  }
 
   return (
     <div className="container">
@@ -102,7 +137,9 @@ export default function NewProductPage() {
             <p className={styles.helpText}>Coloque umas fotos bonitas pro pessoal ver o estado do trem.</p>
           </div>
 
-          <button type="submit" className={styles.submitButton}>Publicar Anúncio</button>
+          <button type="submit" disabled={submitting} className={styles.submitButton}>
+            {submitting ? 'Publicando...' : 'Publicar Anúncio'}
+          </button>
         </form>
       </div>
     </div>

@@ -20,7 +20,24 @@
 .searchContainer {
   display: flex;
   justify-content: center;
+  gap: 1rem;
   margin-bottom: 1rem;
+}
+
+.selectInput {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: var(--background-color);
+  color: var(--text-main);
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.selectInput:focus {
+  border-color: var(--primary-color);
 }
 
 .searchInput {
@@ -130,4 +147,30 @@
 .location {
   color: var(--text-muted);
   font-size: 0.8rem;
+}
+
+.bannerContainer {
+  margin: 2rem 0;
+}
+
+.banner {
+  display: block;
+  background-color: var(--background-secondary);
+  border: 2px dashed var(--primary-color);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  text-decoration: none;
+  color: var(--text-main);
+  transition: all 0.2s ease;
+}
+
+.banner:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.banner h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
 }

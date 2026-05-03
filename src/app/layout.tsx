@@ -19,6 +19,7 @@ export const metadata: Metadata = {
 
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 export default function RootLayout({
   children,
@@ -28,11 +29,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body>
-        <Header />
-        <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          {children}
-        </main>
-        <Footer />
+        <AuthProvider>
+          <Header />
+          <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+            {children}
+          </main>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

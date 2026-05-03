@@ -145,6 +145,23 @@
   background-color: var(--border-color);
 }
 
+.loginRequiredButton {
+  background-color: var(--background-color);
+  color: var(--text-muted);
+  border: 1px dashed var(--border-color);
+  padding: 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.loginRequiredButton:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
 .notFound {
   text-align: center;
   padding: 5rem 0;
@@ -213,13 +230,39 @@
   padding: 1rem;
   background-color: var(--background-secondary);
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.messagesList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.msgSelf {
+  align-self: flex-end;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 12px 12px 0 12px;
+  max-width: 80%;
+}
+
+.msgOther {
+  align-self: flex-start;
+  background-color: white;
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  padding: 0.75rem 1rem;
+  border-radius: 12px 12px 12px 0;
+  max-width: 80%;
 }
 
 .systemMessage {
   color: var(--text-muted);
   text-align: center;
+  margin: auto;
   background-color: var(--background-color);
   padding: 1rem;
   border-radius: 8px;
@@ -231,6 +274,7 @@
   display: flex;
   gap: 1rem;
   border-top: 1px solid var(--border-color);
+  background-color: var(--background-color);
 }
 
 .chatInput {
@@ -239,14 +283,27 @@
   border: 1px solid var(--border-color);
   border-radius: 8px;
   background-color: var(--background-secondary);
+  color: var(--text-main);
+  outline: none;
+}
+
+.chatInput:focus {
+  border-color: var(--primary-color);
 }
 
 .chatSend {
   padding: 0.75rem 1.5rem;
-  background-color: var(--text-muted);
+  background-color: var(--primary-color);
   color: white;
   border: none;
   border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.chatSend:hover {
+  background-color: var(--primary-hover);
 }
 
 @media (max-width: 768px) {
