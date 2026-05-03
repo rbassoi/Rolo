@@ -63,7 +63,7 @@ export default function Home() {
       {/* Promo banner */}
       <div className="promo-banner fade-up">
         <strong>Quer anunciar sua lojinha ou serviço aqui de destaque?</strong>
-        <p>Entre em contato com o <Link href="/admin/banners">administrador do portal</Link>! Clique para saber mais.</p>
+        <p>Entre em contato com o <Link href="/contact">administrador do portal</Link>! Clique para saber mais.</p>
       </div>
 
       {/* Hero */}

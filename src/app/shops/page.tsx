@@ -105,7 +105,7 @@ export default function ShopsPage() {
     <div className="container">
       <div className="promo-banner fade-up" style={{ marginTop: '40px' }}>
         <strong>Quer anunciar sua lojinha ou serviço aqui de destaque?</strong>
-        <p>Entre em contato com o <Link href="/admin/banners">administrador do portal</Link>! Clique para saber mais.</p>
+        <p>Entre em contato com o <Link href="/contact">administrador do portal</Link>! Clique para saber mais.</p>
       </div>
 
       <div style={{ marginTop: '30px', marginBottom: '30px' }} className="fade-up">
